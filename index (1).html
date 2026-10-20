@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inside the Feed</title>
+  <meta name="description" content="An interactive model of a fictional social platform about how recommendation systems decide who gets seen — and what gets made.">
+  <meta property="og:title" content="Inside the Feed">
+  <meta property="og:description" content="Step inside a fictional feed, first as a user and then as a creator, and watch what the algorithm rewards.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#f3efe6">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23e8461b'/><circle cx='50' cy='50' r='18' fill='%23f3efe6'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" id="skipLink">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="#home"><span class="brand-dot" aria-hidden="true"></span>Inside the Feed</a>
+    <nav aria-label="Sections">
+      <ul class="nav">
+        <li><a href="#home">Start</a></li>
+        <li><a href="#feed"><span class="nav-num">1</span>The Feed</a></li>
+        <li><a href="#creator"><span class="nav-num">2</span>The Creator</a></li>
+        <li><a href="#platform"><span class="nav-num">3</span>The Platform</a></li>
+        <li><a href="#reflection">Reflection</a></li>
+        <li><a href="#notes">Design Notes</a></li>
+        <li><a href="#sources">Sources</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ===================== HOME ===================== -->
+    <section class="page" id="home" aria-labelledby="home-title">
+      <div class="hero">
+        <p class="kicker">A critical-play experiment · Digital Studies 357</p>
+        <h1 id="home-title" tabindex="-1">Inside the <em>Feed</em></h1>
+        <p class="lede">Every scroll is a vote you didn't know you were casting. This site puts you inside <strong>Drift</strong>, a small fictional social platform, so you can watch its recommendation system decide what gets seen, and, in turn, what gets made.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#feed">Begin Part 1 →</a>
+          <a class="btn btn-ghost" href="#notes">How the model works</a>
+        </div>
+      </div>
+
+      <div class="parts">
+        <a class="part-card" href="#feed">
+          <span class="part-num">01</span>
+          <h2>You are the user</h2>
+          <p>Like, watch, and skip your way through 20 posts. Watch the feed learn from you, and quietly narrow.</p>
+          <span class="part-time">≈ 4 minutes</span>
+        </a>
+        <a class="part-card" href="#creator">
+          <span class="part-num">02</span>
+          <h2>You are the creator</h2>
+          <p>Spend eight weeks posting. Choose between what you love making and what the platform rewards.</p>
+          <span class="part-time">≈ 4 minutes</span>
+        </a>
+        <a class="part-card" href="#platform">
+          <span class="part-num">03</span>
+          <h2>You are the platform</h2>
+          <p>Rewrite Drift's rules yourself. Every setting trades engagement against diversity. Decide who wins.</p>
+          <span class="part-time">≈ 2 minutes</span>
+        </a>
+      </div>
+      <p class="after-parts">Then step back: a short <a href="#reflection">reflection</a> connects the experience to research on platforms, visibility, and cultural production.</p>
+
+      <aside class="disclaimer">
+        <strong>A model, not a recreation.</strong> Drift is invented. Its rules are deliberately simple and fully disclosed on the <a href="#notes">Design Notes</a> page. Every creator and post is fictional. Your gameplay choices are not stored or sent to this site’s server; fonts may be requested from Google.
+      </aside>
+    </section>
+
+    <!-- ===================== PART 1: FEED ===================== -->
+    <section class="page" id="feed" aria-labelledby="feed-title" hidden>
+      <div class="page-head">
+        <p class="kicker">Part 1 of 3</p>
+        <h2 id="feed-title" class="page-title" tabindex="-1">You are the user</h2>
+        <p class="lede-sm">Scroll through Drift's <em>For You</em> feed. React honestly: like what you like, skip what you don't. The panel beside the phone shows what the system is learning about you as you go.</p>
+        <div class="feed-controls">
+          <label class="switch">
+            <input type="checkbox" id="machineryToggle" checked>
+            <span class="switch-track" aria-hidden="true"></span>
+            <span>Show the machinery</span>
+          </label>
+          <p class="keys">Keyboard: <kbd>L</kbd> like · <kbd>W</kbd> keep watching · <kbd>S</kbd> skip</p>
+        </div>
+      </div>
+
+      <div class="feed-layout">
+        <div class="phone-wrap">
+          <div class="phone" role="region" aria-label="Drift app (fictional)">
+            <div class="phone-top">
+              <span class="app-name">drift</span>
+              <span class="app-tab">For You</span>
+              <span class="app-count" id="feedProgress">1 / 20</span>
+            </div>
+            <div class="progress-rail" aria-hidden="true"><div class="progress-fill" id="feedProgressBar"></div></div>
+            <div class="post-area" id="postArea" aria-live="polite"></div>
+            <div class="post-actions" id="postActions">
+              <button class="act act-like" type="button" data-action="like"><span aria-hidden="true">♥</span> Like</button>
+              <button class="act act-watch" type="button" data-action="watch"><span aria-hidden="true">▶</span> Keep watching</button>
+              <button class="act act-skip" type="button" data-action="skip"><span aria-hidden="true">⏭</span> Skip</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="machinery" id="machinery" aria-label="Behind the screen">
+          <div class="mach-head">
+            <h3>Behind the screen</h3>
+            <span class="mach-tag"><span class="pulse" aria-hidden="true"></span>live</span>
+          </div>
+
+          <div class="meter-block">
+            <div class="meter-label"><span>Feed diversity</span><strong id="divValue">100%</strong></div>
+            <div class="meter" aria-hidden="true"><div class="meter-fill" id="divFill"></div></div>
+            <p class="meter-note">How spread out your next post could be across all eight topics.</p>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat"><span class="stat-num" id="exploreValue">40%</span><span class="stat-label">chance the next post is a random test</span></div>
+            <div class="stat"><span class="stat-num" id="bigShare">—</span><span class="stat-label">of your posts came from accounts over 500K</span></div>
+          </div>
+
+          <h4>What it thinks you want next</h4>
+          <ol class="bars" id="interestBars"></ol>
+
+          <h4>Decision log</h4>
+          <ol class="log" id="algoLog" aria-live="polite"></ol>
+        </aside>
+
+        <p class="blind-note">The machinery is hidden. Scroll the way you normally would, then switch it back on and see what Drift has been deciding.</p>
+      </div>
+
+      <div class="summary" id="feedSummary" tabindex="-1" hidden></div>
+    </section>
+
+    <!-- ===================== PART 2: CREATOR ===================== -->
+    <section class="page" id="creator" aria-labelledby="creator-title" hidden>
+      <div class="page-head">
+        <p class="kicker">Part 2 of 3</p>
+        <h2 id="creator-title" class="page-title" tabindex="-1">You are the creator</h2>
+        <p class="lede-sm">Now switch sides. You have eight weeks on Drift. Each week you decide what to post and how to make it. The platform decides who sees it.</p>
+      </div>
+
+      <div class="creator-layout">
+        <div class="studio" id="studio" aria-live="polite"></div>
+
+        <aside class="dashboard" aria-label="Your creator dashboard">
+          <div class="dash-head">
+            <span class="avatar" aria-hidden="true">you</span>
+            <div><strong>@you</strong><span class="dash-sub" id="dashWeek">Not started</span></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat"><span class="stat-num" id="dashFollowers">120</span><span class="stat-label">your followers</span></div>
+            <div class="stat"><span class="stat-num" id="dashRival">120</span><span class="stat-label">@trendchaser's followers</span></div>
+          </div>
+          <div class="meter-block">
+            <div class="meter-label"><span>Feels like your work</span><strong id="voiceValue">50</strong></div>
+            <div class="meter" aria-hidden="true"><div class="meter-fill meter-voice" id="voiceFill"></div></div>
+            <p class="meter-note">Rises when you make what you love, your way. Drift never sees this number.</p>
+          </div>
+          <h4>Who follows you now</h4>
+          <ol class="bars bars-sm" id="audienceBars"></ol>
+          <h4>Your posts</h4>
+          <ol class="post-history" id="postHistory"></ol>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== PART 3: PLATFORM ===================== -->
+    <section class="page" id="platform" aria-labelledby="platform-title" hidden>
+      <div class="page-head">
+        <p class="kicker">Part 3 of 3</p>
+        <h2 id="platform-title" class="page-title" tabindex="-1">You are the platform</h2>
+        <p class="lede-sm">You've been the user and the creator. Now you write the rules. Adjust Drift's settings and watch what happens to 200 simulated users. There is no neutral setting. Every choice decides who gets seen.</p>
+      </div>
+
+      <div class="lab-layout">
+        <div class="studio-card lab-controls" id="labControls">
+          <h3>Drift's settings</h3>
+          <div class="presets" role="group" aria-label="Presets">
+            <button class="preset" type="button" data-preset="drift" aria-pressed="true">Drift as you played it</button>
+            <button class="preset" type="button" data-preset="engagement" aria-pressed="false">Maximize engagement</button>
+            <button class="preset" type="button" data-preset="discovery" aria-pressed="false">Fair discovery</button>
+          </div>
+
+          <div class="slider">
+            <label for="labExplore">Minimum exploration <output id="labExploreOut" for="labExplore">5%</output></label>
+            <input type="range" id="labExplore" min="0" max="50" step="1" value="5">
+            <p class="slider-help">How often users get shown a random topic, no matter what they've liked.</p>
+          </div>
+          <div class="slider">
+            <label for="labPopularity">Popularity weight <output id="labPopularityOut" for="labPopularity">0.35</output></label>
+            <input type="range" id="labPopularity" min="0" max="100" step="5" value="35">
+            <p class="slider-help">0 means every creator in a topic is equally likely. Higher values favor accounts that are already big.</p>
+          </div>
+          <div class="slider">
+            <label for="labSharpen">Personalization strength <output id="labSharpenOut" for="labSharpen">2.0</output></label>
+            <input type="range" id="labSharpen" min="5" max="40" step="1" value="20">
+            <p class="slider-help">How sharply small preferences turn into a narrow feed.</p>
+          </div>
+          <label class="check"><input type="checkbox" id="labLinger" checked> Treat hesitating before a skip as interest</label>
+        </div>
+
+        <div class="machinery lab-out" aria-live="polite">
+          <div class="mach-head"><h3>What happens</h3><span class="mach-tag"><span class="pulse" aria-hidden="true"></span>simulated</span></div>
+          <div id="labResults"></div>
+          <p class="meter-note" id="labRuns"></p>
+        </div>
+      </div>
+
+      <div class="summary lab-think">
+        <h3>Which version would you ship?</h3>
+        <p>Try the three presets. "Maximize engagement" usually wins on the one number a platform's business depends on, while big accounts swallow the feed and small creators almost disappear. "Fair discovery" spreads attention around but gives up some engagement. Neither is simply the right answer; each one is a decision about whose work matters.</p>
+        <div class="think">
+          <h4>Think about it</h4>
+          <ul>
+            <li>Engagement is easy to measure. Fairness, variety, and creative risk aren't. What happens to values a platform can't count?</li>
+            <li>Users never see these sliders. Who should get to set them?</li>
+            <li>Building this lab meant choosing every number on this page. What does that suggest about the people who design real platforms?</li>
+          </ul>
+        </div>
+        <div class="summary-actions">
+          <a class="btn btn-ghost" href="#creator">← Part 2</a>
+          <a class="btn btn-primary" href="#reflection">Read the reflection →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== REFLECTION ===================== -->
+    <section class="page prose-page" id="reflection" aria-labelledby="reflection-title" hidden>
+      <article class="prose">
+        <p class="kicker">Reflection</p>
+        <h2 id="reflection-title" class="page-title" tabindex="-1">What the feed makes</h2>
+
+        <h3>The question</h3>
+        <p>This project asks: <em>how do recommendation systems influence which cultural products become visible, popular, and worth creating in the first place?</em></p>
+        <p>I want visitors to notice that a feed is not simply a reflection of what they like. It is also a set of choices about what counts as interest, whose work deserves another chance, and which kinds of posts become safer to make. I made this question playable because these choices can feel abstract until a visitor participates in them: tapping Like, deciding what to post, or moving a slider makes the consequences easier to see.</p>
+
+        <h3>The user: personalization as narrowing</h3>
+        <p>In Part 1, all eight topics begin on equal footing. Each like, watch, or skip changes a topic's weight, and Drift increasingly relies on those weights rather than exploring. The diversity meter describes the spread of possible recommendations; it is not a measure of how broad or narrow a person's actual tastes are. Eli Pariser's <cite>The Filter Bubble</cite> helped me think about this difference between a person's interests and the version of those interests a platform constructs. A quick skip might mean boredom, but it might also mean bad timing or an unappealing example of a topic. Drift treats it as a signal anyway. Once the system reduces a topic's chances of appearing, the visitor has fewer opportunities to show renewed interest in it. The feed is personalized through the user's actions, but the platform decides how those actions are translated into future choices.</p>
+
+        <h3>The creator: a feedback loop</h3>
+        <p>Part 2 shifts attention from what audiences encounter to what creators feel encouraged to produce. In Dustin Kiskaddon's <cite>Blood and Lightning</cite>, tattooers' Instagram portfolios are not just records of finished work; the images they choose to show can attract particular clients, whose requests then shape future work and portfolios. Drift turns that feedback loop into a series of posting decisions. An early successful topic brings followers who expect more of that topic. The next time the creator makes something different, the existing audience may respond less strongly, which affects distribution. The comparison with @trendchaser makes the pressure especially visible: following a trend is a plausible growth strategy, even when it pulls a creator away from the work they originally wanted to make. The separate “Feels like your work” score highlights something follower counts cannot measure: creative satisfaction.</p>
+
+        <h3>Rankings are never neutral</h3>
+        <p>The algorithm in Drift has no independent understanding of which post is meaningful, skillful, or valuable. It uses the measures I gave it. An account with many followers is more likely to be selected within its topic because the code weights creators by follower count; that is an advantage built into the ranking rule, not evidence that its posts are better. Safiya Umoja Noble's <cite>Algorithms of Oppression</cite> challenges the assumption that computational rankings are objective or detached from social power. Her analysis concerns real forms of structural inequality that this fictional model does not reproduce. Tarleton Gillespie's <cite>Custodians of the Internet</cite> likewise shows how platforms exercise power over visibility through decisions that may seem merely technical. Drift deliberately exposes those decisions instead of presenting a ranking as inevitable.</p>
+
+        <h3>The platform: rules as values</h3>
+        <p>In Part 3, visitors can alter how strongly Drift explores new topics, favors popular accounts, and personalizes a feed. The presets make competing priorities easier to compare, but the results are simulated averages, not predictions about TikTok, Instagram, or any other platform. I would defend a version closer to “Fair discovery” because it gives unfamiliar topics and smaller creators more opportunities to be encountered, even if the model reports less engagement. That is a choice about what a cultural platform should make possible, not proof that variety always makes a better experience for every user. Gillespie's work is useful here because it asks us to treat platform decisions as decisions with public consequences. The sliders are visible in Drift; on many real services, people experience the outcomes without being able to inspect or change the underlying priorities.</p>
+
+        <h3>Building as analysis</h3>
+        <p>Mary Flanagan's <cite>Critical Play</cite> encouraged me to communicate an argument through the rules of an experience rather than through text alone. Garnet Hertz's <cite>Conversations in Critical Making</cite> helped me treat the act of constructing those rules as inquiry. For example, I had to assign a numerical effect to liking versus skipping, decide when exploration should fall, and choose the engagement threshold that determines whether a creator's post gets wider distribution. None of those numbers is a universal fact about recommendation systems. Writing them into the model exposed how easily a design can transform an interpretation into an apparently objective result. Adding the “Behind the screen” panel and the Design Notes page was therefore central to the project: the site asks visitors to examine both the consequences of rules and the assumptions behind them.</p>
+
+        <h3>Limits of this model</h3>
+        <p>Drift is intentionally a small, fictional model. Its categories are fixed; its posts are represented by captions and emoji; and simulated people do not have the shifting moods, histories, or complicated social relationships of actual users. The site does not model advertising, moderation, paid promotion, discrimination, or the influence of creators and communities outside a platform. In particular, Noble's account of racialized harm cannot be reduced to Drift's follower-count weighting. The results also include randomness, so a single playthrough should not be treated as a controlled experiment. Simplification is useful because it makes specific feedback loops legible, but it can also mislead if visitors mistake the chosen numbers for measurements of real services. My goal is not to reveal any company's actual algorithm. It is to make the questions behind algorithmic visibility harder to ignore.</p>
+
+        <div class="page-nav"><a class="btn btn-ghost" href="#platform">← Part 3</a><a class="btn btn-primary" href="#notes">Design notes →</a></div>
+      </article>
+    </section>
+
+    <!-- ===================== DESIGN NOTES ===================== -->
+    <section class="page prose-page" id="notes" aria-labelledby="notes-title" hidden>
+      <article class="prose">
+        <p class="kicker">Design notes</p>
+        <h2 id="notes-title" class="page-title" tabindex="-1">Every rule, disclosed</h2>
+        <p>Real platforms do not disclose every ranking decision. Drift instead explains the main rules visitors interact with. They are simplified on purpose. The goal is not accuracy to any real platform but making a <em>kind</em> of incentive visible.</p>
+
+        <h3>Part 1 · The feed</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Rule</th><th scope="col">Value</th></tr></thead>
+            <tbody>
+              <tr><td>Starting interest</td><td>All 8 topics weighted equally</td></tr>
+              <tr><td>Like</td><td>Topic weight × 1.7</td></tr>
+              <tr><td>Keep watching</td><td>Topic weight × 1.3</td></tr>
+              <tr><td>Quick skip (under 4 seconds)</td><td>Topic weight × 0.55</td></tr>
+              <tr><td>Slow skip (4 seconds or more)</td><td>Topic weight × 0.95. Hesitation counts as interest.</td></tr>
+              <tr><td>Exploration</td><td>40% initially; multiplied by 0.86 after each response, with a 5% floor</td></tr>
+              <tr><td>Choosing a topic</td><td>Otherwise picked in proportion to weight <strong>squared</strong>, so small preferences become large gaps</td></tr>
+              <tr><td>Choosing a creator</td><td>Picked in proportion to followers<sup>0.35</sup>. A 2M account has about 3.9× the selection weight of a 40K account and about 14.3× that of a 1K account.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Part 2 · The creator</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Rule</th><th scope="col">Value</th></tr></thead>
+            <tbody>
+              <tr><td>Test batch</td><td>Every post is first shown to 40 people + 35% of your followers (60% followers, 40% strangers)</td></tr>
+              <tr><td>Base engagement</td><td>4.5%, multiplied by how much that audience cares about the topic</td></tr>
+              <tr><td>Trending topic</td><td>× 1.5, and strangers are 2.2× more interested in it</td></tr>
+              <tr><td>Trending format</td><td>× 1.3, every time</td></tr>
+              <tr><td>Your own way</td><td>Random between × 0.55 and × 1.7 (+0.1 if it's the topic you love)</td></tr>
+              <tr><td>Length</td><td>15-second clip × 1.15 · 3-minute piece × 0.8</td></tr>
+              <tr><td>Distribution line</td><td>At 6% engagement or more, the post is pushed further and reach grows steeply. Below 6%, it stops at the test batch.</td></tr>
+              <tr><td>New followers</td><td>About 18% of likes, and they follow you <em>for that topic</em></td></tr>
+              <tr><td>Unfollows</td><td>If the selected topic has less than 60% of an evenly distributed topic’s audience match, 3% of followers leave (after the first post)</td></tr>
+              <tr><td>@trendchaser</td><td>Always posts the trending topic, in the trending format, as a short clip</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Part 3 · The platform lab</h3>
+        <p>The lab runs 200 simulated users through 40 posts each, using a modified version of the feed rules from Part 1 with your settings. Exploration starts at 40% and decays toward the floor you choose. Each simulated user loves one random topic (85% chance of liking it) and likes anything else 18% of the time. When "hesitating counts as interest" is on, about a third of their skips are slow skips. Results are averages, so they shift slightly each time.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Preset</th><th scope="col">Exploration · Popularity · Personalization · Hesitation</th></tr></thead>
+            <tbody>
+              <tr><td>Drift as you played it</td><td>5% floor · 0.35 · 2.0 · on</td></tr>
+              <tr><td>Maximize engagement</td><td>0% · 0.80 · 3.0 · on</td></tr>
+              <tr><td>Fair discovery</td><td>35% · 0 · 1.0 · off</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Assumptions built into Drift</h3>
+        <ul>
+          <li><strong>Engagement is the only measure of value.</strong> Drift cannot tell a meaningful post from a merely catchy one.</li>
+          <li><strong>Popularity compounds.</strong> Accounts that are already large get picked more, which makes them larger.</li>
+          <li><strong>The platform sets the trends.</strong> Creators react to trends; they don't choose them.</li>
+          <li><strong>Your past defines your audience.</strong> Followers arrive for a topic and expect more of it.</li>
+          <li><strong>Behavior is consent.</strong> Drift treats every click and pause as a preference, whether or not you meant it as one.</li>
+        </ul>
+
+        <h3>What Drift leaves out</h3>
+        <p>Content moderation, advertising, paid promotion, human curators, real demographic data, and the documented biases that affect whose content is recommended. Each would make the model more realistic and harder to read.</p>
+
+        <h3>Ethics and accessibility</h3>
+        <ul>
+          <li>Interaction choices are processed locally in the browser and are not saved to an account or sent to this site’s server. Google Fonts, when loaded, are requested from an external provider.</li>
+          <li>Creators and posts were written as fictional examples; the model does not use real user profiles.</li>
+          <li>Post images are Unicode emoji and generated color gradients, with no third-party media.</li>
+          <li>The main interactive controls support keyboard input. Meaning is never carried by color alone: bars, results, and badges always include text.</li>
+          <li>Animations are turned off for visitors who set "reduce motion" on their device.</li>
+        </ul>
+
+        <h3>Making log</h3>
+        <p>This project began with a simple structure: visitors would first experience the feed as users, then make posting decisions as creators. As the model developed, I added a third part, a platform lab, so visitors could question the rules instead of only living with their effects. Building Drift meant deciding what a “like,” a long watch, a slow skip, a trending format, and a large follower count would mean in numbers. I settled on a feed that gradually reduces exploration, a creator simulation with an engagement threshold, and a lab where those priorities can be changed. None of these values comes from real platform data; each is an illustrative choice. The biggest lesson from turning the idea into code was that every result depends on a design decision made beforehand. Even the dashboard's definition of “diversity” depends on which topics I included and how I chose to count them.</p>
+        <p>I tested the site with my mom, dad, and brother. All three were confused at first about the overall goal: they weren't sure what they were supposed to be doing, or what each step was meant to show. Their confusion was useful. Someone who already thinks about recommendation systems fills in the purpose without noticing, but a visitor arriving cold needs each part to explain why it matters, not just what to click. In response, I changed the site's format and rewrote my explanations so that the purpose of each part is clearer before visitors begin. Testing with my family showed me that a critical-play project has to make its stakes clear up front, so that the rules can then do the arguing.</p>
+
+        <div class="page-nav"><a class="btn btn-ghost" href="#reflection">← Reflection</a><a class="btn btn-primary" href="#sources">Sources →</a></div>
+      </article>
+    </section>
+
+    <!-- ===================== SOURCES ===================== -->
+    <section class="page prose-page" id="sources" aria-labelledby="sources-title" hidden>
+      <article class="prose">
+        <p class="kicker">Sources &amp; credits</p>
+        <h2 id="sources-title" class="page-title" tabindex="-1">Works cited</h2>
+        <p class="small-note">Bibliography in Chicago-style format. In-text author references in the reflection connect the project to these sources.</p>
+        <ul class="biblio">
+          <li>Flanagan, Mary. <cite>Critical Play: Radical Game Design</cite>. Cambridge, MA: MIT Press, 2009.<span class="biblio-use">Framework for communicating ideas through rules and interaction; shapes the whole site's form.</span></li>
+          <li>Gillespie, Tarleton. <cite>Custodians of the Internet: Platforms, Content Moderation, and the Hidden Decisions That Shape Social Media</cite>. New Haven, CT: Yale University Press, 2018.<span class="biblio-use">How platforms shape visibility; informs the "every rule disclosed" design notes.</span></li>
+          <li>Hertz, Garnet, ed. <cite>Conversations in Critical Making</cite>. CTheory Books, Blueshift Series, 2015.<span class="biblio-use">Frames building the system as part of the inquiry.</span></li>
+          <li>Kiskaddon, Dustin. <cite>Blood and Lightning: On Becoming a Tattooer</cite>. Stanford, CA: Stanford University Press, 2024.<span class="biblio-use">The portfolio feedback loop behind the creator mode's audience rules.</span></li>
+          <li>Noble, Safiya Umoja. <cite>Algorithms of Oppression: How Search Engines Reinforce Racism</cite>. New York: New York University Press, 2018.<span class="biblio-use">Challenges the idea that rankings are neutral; informs the popularity weighting.</span></li>
+          <li>Pariser, Eli. <cite>The Filter Bubble: What the Internet Is Hiding from You</cite>. New York: Penguin Press, 2011.<span class="biblio-use">Informs the personalization and narrowing in the feed mode.</span></li>
+        </ul>
+
+        <h3>Credits</h3>
+        <ul>
+          <li><strong>Concept, research, and writing:</strong> Harshi Kommidi.</li>
+          <li><strong>Implementation:</strong> HTML, CSS, and JavaScript.</li>
+          <li><strong>Typefaces:</strong> Fraunces by Undercase Type; IBM Plex Sans and IBM Plex Mono by IBM. Served by Google Fonts under the SIL Open Font License.</li>
+          <li><strong>Imagery:</strong> Unicode emoji rendered by the visitor's own device, plus generated color gradients.</li>
+          <li><strong>Drift</strong> and every creator, handle, and post on this site are fictional.</li>
+        </ul>
+
+        <div class="page-nav"><a class="btn btn-ghost" href="#notes">← Design notes</a><a class="btn btn-primary" href="#home">Back to start</a></div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Inside the Feed · Harshi Kommidi · Gameplay choices stay in your browser.</p>
+    <div class="share">
+      <button class="btn btn-small" type="button" id="shareBtn">Share this project</button>
+      <span class="share-status" id="shareStatus" role="status"></span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
